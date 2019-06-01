@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 
 class ProjectsController extends Controller
 {
@@ -28,11 +30,15 @@ class ProjectsController extends Controller
         return view('projects.create');
     }
 
+    /**
+     * @return RedirectResponse|Redirector
+     */
     public function store()
     {
         $attributes = \request()->validate([
             'title' => 'required',
             'description' => 'required',
+            'notes' => 'min:3'
         ]);
 
         auth()->user()->projects()->create($attributes);
